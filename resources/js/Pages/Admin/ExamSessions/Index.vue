@@ -15,8 +15,8 @@
                             <div class="input-group">
                                 <input type="text" class="form-control border-0 shadow" v-model="search" placeholder="masukkan kata kunci dan enter...">
                                 <span class="input-group-text border-0 shadow">
-                                        <i class="fa fa-search"></i>
-                                    </span>
+                                            <i class="fa fa-search"></i>
+                                        </span>
                             </div>
                         </form>
                     </div>
@@ -146,7 +146,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    Inertia.delete(`/admin/exam_session/${id}`);
+                    Inertia.delete(`/admin/exam_sessions/${id}`);
                     Swal.fire({
                         title: 'Deleted!',
                         text: 'Sesi Ujian Berhasil Dihapus!.',
@@ -163,6 +163,7 @@ export default {
         return {
             search,
             handleSearch,
+            destroy
         }
 
     }
