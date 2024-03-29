@@ -222,7 +222,6 @@ class ExamController extends Controller
             'option_2'          => 'required',
             'option_3'          => 'required',
             'option_4'          => 'required',
-            'option_5'          => 'required',
             'answer'            => 'required',
         ]);
 
@@ -234,7 +233,6 @@ class ExamController extends Controller
             'option_2'          => $request->option_2,
             'option_3'          => $request->option_3,
             'option_4'          => $request->option_4,
-            'option_5'          => $request->option_5,
             'answer'            => $request->answer,
         ]);
 
@@ -267,7 +265,6 @@ class ExamController extends Controller
             'option_2'          => 'required',
             'option_3'          => 'required',
             'option_4'          => 'required',
-            'option_5'          => 'required',
             'answer'            => 'required',
         ]);
 
@@ -278,7 +275,6 @@ class ExamController extends Controller
             'option_2'          => $request->option_2,
             'option_3'          => $request->option_3,
             'option_4'          => $request->option_4,
-            'option_5'          => $request->option_5,
             'answer'            => $request->answer,
         ]);
 

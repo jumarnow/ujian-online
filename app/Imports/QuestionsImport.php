@@ -22,7 +22,6 @@ class QuestionsImport implements ToModel, WithHeadingRow
             'option_2'  => $row['option_2'],
             'option_3'  => $row['option_3'],
             'option_4'  => $row['option_4'],
-            'option_5'  => $row['option_5'],
             'answer'    => $row['answer'],
         ]);
     }

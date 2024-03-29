@@ -90,21 +90,6 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="width:20%" class="fw-bold">Pilihan E</td>
-                                            <td>
-                                                <Editor
-                                                    api-key="no-api-key"
-                                                    v-model="form.option_5"
-                                                    :init="{
-                                                        height: 130,
-                                                        menubar: false,
-                                                        plugins: 'lists link image emoticons',
-                                                        toolbar: 'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons'
-                                                    }"
-                                                />
-                                            </td>
-                                        </tr>
-                                        <tr>
                                             <td style="width:20%" class="fw-bold">Jawaban Benar</td>
                                             <td>
                                                 <select class="form-control" v-model="form.answer">
@@ -112,7 +97,6 @@
                                                     <option value="2">B</option>
                                                     <option value="3">C</option>
                                                     <option value="4">D</option>
-                                                    <option value="5">E</option>
                                                 </select>
                                             </td>
                                         </tr>
@@ -195,7 +179,6 @@
                     option_2: form.option_2,
                     option_3: form.option_3,
                     option_4: form.option_4,
-                    option_5: form.option_5,
                     answer: form.answer,
                 }, {
                     onSuccess: () => {

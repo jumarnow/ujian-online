@@ -71,7 +71,6 @@
                                                 <li v-html="question.option_2" :class="{ 'text-success fw-bold': question.answer == '2' }"></li>
                                                 <li v-html="question.option_3" :class="{ 'text-success fw-bold': question.answer == '3' }"></li>
                                                 <li v-html="question.option_4" :class="{ 'text-success fw-bold': question.answer == '4' }"></li>
-                                                <li v-html="question.option_5" :class="{ 'text-success fw-bold': question.answer == '5' }"></li>
                                             </ol>
                                         </td>
                                         <td class="text-center">
