@@ -11,7 +11,6 @@
                         <h5><i class="fa fa-question-circle"></i> Tambah Soal Ujian</h5>
                         <hr>
                         <form @submit.prevent="submit">
-
                             <div class="table-responsive mb-4">
                                 <table class="table table-bordered table-centered table-nowrap mb-0 rounded">
                                     <tbody>
@@ -27,6 +26,7 @@
                                                         toolbar: 'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons'
                                                     }"
                                                 />
+                                                <input type="file" class="form-control mt-2" @change="handleQuestionUpload($event)">
                                             </td>
                                         </tr>
                                         <tr>
@@ -42,6 +42,7 @@
                                                         toolbar: 'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons'
                                                     }"
                                                 />
+                                                <input type="file" class="form-control mt-2" @change="handleOptionA($event)">
                                             </td>
                                         </tr>
                                         <tr>
@@ -57,6 +58,7 @@
                                                         toolbar: 'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons'
                                                     }"
                                                 />
+                                                <input type="file" class="form-control mt-2" @change="handleOptionB($event)">
                                             </td>
                                         </tr>
                                         <tr>
@@ -72,6 +74,7 @@
                                                         toolbar: 'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons'
                                                     }"
                                                 />
+                                                <input type="file" class="form-control mt-2" @change="handleOptionC($event)">
                                             </td>
                                         </tr>
                                         <tr>
@@ -87,6 +90,7 @@
                                                         toolbar: 'styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist | link image emoticons'
                                                     }"
                                                 />
+                                                <input type="file" class="form-control mt-2" @change="handleOptionD($event)">
                                             </td>
                                         </tr>
                                         <tr>
@@ -160,25 +164,126 @@
             //define form with reactive
             const form = reactive({
                 question: '',
+                question_img: '',
                 option_1: '',
+                option_1_img: '',
                 option_2: '',
+                option_2_img: '',
                 option_3: '',
+                option_3_img: '',
                 option_4: '',
-                option_5: '',
+                option_4_img: '',
                 answer: '',
             });
 
-            //method "submit"
-            const submit = () => {
+            const handleQuestionUpload = (event) => {
+                // console.log(event);
+                const selectedFile = event.target.files[0];
+                form.question_img = selectedFile.name;
 
-                //send data to server
+                const formData = new FormData();
+                formData.append('tipe', 'question');
+                formData.append('exam_id', props.exam.id);
+                formData.append('file', selectedFile);
+
+                Inertia.post(`/admin/exams_upload_image`, formData, {
+                    onSuccess: () => {
+                        console.log('Gambar berhasil disimpan');
+                    },
+                    onError: (error) => {
+                        console.error('Error uploading image:', error);
+                    }
+                })
+            }
+
+            const handleOptionA = (event) => {
+                const selectedFile = event.target.files[0];
+                form.option_1_img = selectedFile.name;
+
+                const formData = new FormData();
+                formData.append('tipe', 'option');
+                formData.append('exam_id', props.exam.id);
+                formData.append('file', selectedFile);
+
+                Inertia.post(`/admin/exams_upload_image`, formData, {
+                    onSuccess: () => {
+                        console.log('Gambar berhasil disimpan');
+                    },
+                    onError: (error) => {
+                        console.error('Error uploading image:', error);
+                    }
+                })
+            }
+
+            const handleOptionB = (event) => {
+                const selectedFile = event.target.files[0];
+                form.option_2_img = selectedFile.name;
+
+                const formData = new FormData();
+                formData.append('tipe', 'option');
+                formData.append('exam_id', props.exam.id);
+                formData.append('file', selectedFile);
+
+                Inertia.post(`/admin/exams_upload_image`, formData, {
+                    onSuccess: () => {
+                        console.log('Gambar berhasil disimpan');
+                    },
+                    onError: (error) => {
+                        console.error('Error uploading image:', error);
+                    }
+                })
+            }
+
+            const handleOptionC = (event) => {
+                const selectedFile = event.target.files[0];
+                form.option_3_img = selectedFile.name;
+
+                const formData = new FormData();
+                formData.append('tipe', 'option');
+                formData.append('exam_id', props.exam.id);
+                formData.append('file', selectedFile);
+
+                Inertia.post(`/admin/exams_upload_image`, formData, {
+                    onSuccess: () => {
+                        console.log('Gambar berhasil disimpan');
+                    },
+                    onError: (error) => {
+                        console.error('Error uploading image:', error);
+                    }
+                })
+            }
+
+            const handleOptionD = (event) => {
+                const selectedFile = event.target.files[0];
+                form.option_4_img = selectedFile.name;
+
+                const formData = new FormData();
+                formData.append('tipe', 'option');
+                formData.append('exam_id', props.exam.id);
+                formData.append('file', selectedFile);
+
+                Inertia.post(`/admin/exams_upload_image`, formData, {
+                    onSuccess: () => {
+                        console.log('Gambar berhasil disimpan');
+                    },
+                    onError: (error) => {
+                        console.error('Error uploading image:', error);
+                    }
+                })
+            }
+
+            const submit = () => {
                 Inertia.post(`/admin/exams/${props.exam.id}/questions/store`, {
-                    //data
                     question: form.question,
+                    question_img: form.question_img,
                     option_1: form.option_1,
+                    option_1_img: form.option_1_img,
                     option_2: form.option_2,
+                    option_2_img: form.option_2_img,
                     option_3: form.option_3,
+                    option_3_img: form.option_3_img,
                     option_4: form.option_4,
+                    option_4_img: form.option_4_img,
                     answer: form.answer,
                 }, {
                     onSuccess: () => {
@@ -198,6 +303,11 @@
             //return
             return {
                 form,
+                handleQuestionUpload,
+                handleOptionA,
+                handleOptionB,
+                handleOptionC,
+                handleOptionD,
                 submit,
             };
 

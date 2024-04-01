@@ -215,6 +215,7 @@ class ExamController extends Controller
      */
     public function storeQuestion(Request $request, Exam $exam)
     {
+        // dd($request->all());
         //validate request
         $request->validate([
             'question'          => 'required',
@@ -229,10 +230,15 @@ class ExamController extends Controller
         Question::create([
             'exam_id'           => $exam->id,
             'question'          => $request->question,
+            'question_img'          => $request->question_img,
             'option_1'          => $request->option_1,
+            'option_1_img'          => $request->option_1_img,
             'option_2'          => $request->option_2,
+            'option_2_img'          => $request->option_2_img,
             'option_3'          => $request->option_3,
+            'option_3_img'          => $request->option_3_img,
             'option_4'          => $request->option_4,
+            'option_4_img'          => $request->option_4_img,
             'answer'            => $request->answer,
         ]);
 
@@ -309,6 +315,24 @@ class ExamController extends Controller
 
         //redirect
         return redirect()->route('admin.exams.show', $exam->id);
+    }
+
+    public function exams_upload_image(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+        ]);
+
+        $file = $request->file('file');
+        $fileName = $file->getClientOriginalName();
+        if ($request->tipe == 'question') {
+            $file->move(public_path('exam_img/'.$request->exam_id.'/question'), $fileName);
+        } else {
+            $file->move(public_path('exam_img/'.$request->exam_id.'/option'), $fileName);
+        }
+
+
+        // return response()->json(['imageName' => $fileName]);
     }
 
 

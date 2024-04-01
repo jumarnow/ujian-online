@@ -62,15 +62,30 @@
                                 <div class="mt-2"></div>
                                 <tbody>
                                     <tr v-for="(question, index) in exam.questions.data" :key="index">
-                                        <td class="fw-bold text-center">{{ ++index + (exam.questions.current_page - 1) * exam.questions.per_page }}</td>
+                                        <td class="fw-bold text-center">
+                                            {{ ++index + (exam.questions.current_page - 1) * exam.questions.per_page }}
+                                        </td>
                                         <td>
+                                            <img :src="`/exam_img/${exam.id}/question/${question.question_img}`" width="200" alt="">
                                             <div class="fw-bold" v-html="question.question"></div>
                                             <hr>
                                             <ol type="A">
-                                                <li v-html="question.option_1" :class="{ 'text-success fw-bold': question.answer == '1' }"></li>
-                                                <li v-html="question.option_2" :class="{ 'text-success fw-bold': question.answer == '2' }"></li>
-                                                <li v-html="question.option_3" :class="{ 'text-success fw-bold': question.answer == '3' }"></li>
-                                                <li v-html="question.option_4" :class="{ 'text-success fw-bold': question.answer == '4' }"></li>
+                                                <li :class="{ 'text-success fw-bold': question.answer == '1' }">
+                                                    <div v-html="question.option_1"></div>
+                                                    <img :src="`/exam_img/${exam.id}/option/${question.option_1_img}`" width="200" alt="">
+                                                </li>
+                                                <li :class="{ 'text-success fw-bold': question.answer == '2' }">
+                                                    <div v-html="question.option_2"></div>
+                                                    <img :src="`/exam_img/${exam.id}/option/${question.option_2_img}`" width="200" alt="">
+                                                </li>
+                                                <li :class="{ 'text-success fw-bold': question.answer == '3' }">
+                                                    <div v-html="question.option_3"></div>
+                                                    <img :src="`/exam_img/${exam.id}/option/${question.option_3_img}`" width="200" alt="">
+                                                </li>
+                                                <li :class="{ 'text-success fw-bold': question.answer == '4' }">
+                                                    <div v-html="question.option_4"></div>
+                                                    <img :src="`/exam_img/${exam.id}/option/${question.option_4_img}`" width="200" alt="">
+                                                </li>
                                             </ol>
                                         </td>
                                         <td class="text-center">

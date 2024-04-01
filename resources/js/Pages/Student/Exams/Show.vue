@@ -25,6 +25,7 @@
                     <div v-if="question_active !== null">
 
                         <div>
+                            <img :src="`/exam_img/${question_active.question.exam.id}/question/${question_active.question.question_img}`" width="200" alt="">
                             <p v-html="question_active.question.question"></p>
                         </div>
 
@@ -39,6 +40,8 @@
 
                                     </td>
                                     <td style="padding: 10px;">
+
+                                        <img :src="`/exam_img/${question_active.question.exam.id}/option/${question_active.question['option_'+answer+'_img']}`" width="200" alt="">
                                         <p v-html="question_active.question['option_'+answer]"></p>
                                     </td>
                                 </tr>

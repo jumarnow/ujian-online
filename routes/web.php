@@ -38,6 +38,7 @@ Route::prefix('admin')->group(function() {
 
         Route::get('/exams/{exam}/questions/import', [\App\Http\Controllers\Admin\ExamController::class, 'import'])->name('admin.exam.questionImport');
         Route::post('/exams/{exam}/questions/import', [\App\Http\Controllers\Admin\ExamController::class, 'storeImport'])->name('admin.exam.questionStoreImport');
+        Route::post('/exams_upload_image', [\App\Http\Controllers\Admin\ExamController::class, 'exams_upload_image'])->name('exams.upload.image');
 
         Route::resource('/exam_sessions', \App\Http\Controllers\Admin\ExamSessionController::class, ['as' => 'admin']);
 

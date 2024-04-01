@@ -17,10 +17,15 @@ return new class extends Migration
             $table->id();
             $table->foreignId('exam_id')->references('id')->on('exams')->cascadeOnDelete();
             $table->text('question');
+            $table->string('question_img')->nullable();
             $table->text('option_1')->nullable();
+            $table->string('option_1_img')->nullable();
             $table->text('option_2')->nullable();
+            $table->string('option_2_img')->nullable();
             $table->text('option_3')->nullable();
+            $table->string('option_3_img')->nullable();
             $table->text('option_4')->nullable();
+            $table->string('option_4_img')->nullable();
             $table->integer('answer');
             $table->timestamps();
         });
