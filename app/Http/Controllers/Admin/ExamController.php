@@ -277,10 +277,15 @@ class ExamController extends Controller
         //update question
         $question->update([
             'question'          => $request->question,
+            'question_img'      => $request->question_img,
             'option_1'          => $request->option_1,
+            'option_1_img'      => $request->option_1_img,
             'option_2'          => $request->option_2,
+            'option_2_img'      => $request->option_2_img,
             'option_3'          => $request->option_3,
+            'option_3_img'      => $request->option_3_img,
             'option_4'          => $request->option_4,
+            'option_4_img'      => $request->option_4_img,
             'answer'            => $request->answer,
         ]);
 
