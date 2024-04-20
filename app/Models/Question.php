@@ -22,6 +22,7 @@ class Question extends Model
         'option_4',
         'option_4_img',
         'answer',
+        'tipe',
     ];
 
     public function exam()

@@ -24,8 +24,8 @@ class ExamController extends Controller
     {
         //
         //get exams
-        $exams = Exam::when(request()->q, function($exams) {
-            $exams = $exams->where('title', 'like', '%'. request()->q . '%');
+        $exams = Exam::when(request()->q, function ($exams) {
+            $exams = $exams->where('title', 'like', '%' . request()->q . '%');
         })->with('lesson', 'classroom', 'questions')->latest()->paginate(5);
 
         //append query string to pagination links
@@ -217,29 +217,46 @@ class ExamController extends Controller
     {
         // dd($request->all());
         //validate request
+
+        // $question = strip_tags($request->question);
+
+        // dd($question);
         $request->validate([
-            'question'          => 'required',
-            'option_1'          => 'required',
-            'option_2'          => 'required',
-            'option_3'          => 'required',
-            'option_4'          => 'required',
-            'answer'            => 'required',
+            'question'=> 'required',
+            'option_1'=> 'required',
+            'option_2'=> 'required',
+            'option_3'=> 'required',
+            'option_4'=> 'required',
+            'answer'=> 'required',
         ]);
+
+        if ($request->tipe == 'PG Komplek') {
+            $answer = implode(",",$request->answer);
+        }else{
+            $answer = $request->answer;
+        }
+
+        $question = strip_tags($request->question);
+        $option_1 = strip_tags($request->option_1);
+        $option_2 = strip_tags($request->option_2);
+        $option_3 = strip_tags($request->option_3);
+        $option_4 = strip_tags($request->option_4);
 
         //create question
         Question::create([
-            'exam_id'           => $exam->id,
-            'question'          => $request->question,
-            'question_img'          => $request->question_img,
-            'option_1'          => $request->option_1,
-            'option_1_img'          => $request->option_1_img,
-            'option_2'          => $request->option_2,
-            'option_2_img'          => $request->option_2_img,
-            'option_3'          => $request->option_3,
-            'option_3_img'          => $request->option_3_img,
-            'option_4'          => $request->option_4,
-            'option_4_img'          => $request->option_4_img,
-            'answer'            => $request->answer,
+            'exam_id'=> $exam->id,
+            'question'=> $question,
+            'question_img'=> $request->question_img,
+            'option_1'=> $option_1,
+            'option_1_img'=> $request->option_1_img,
+            'option_2'=> $option_2,
+            'option_2_img'=> $request->option_2_img,
+            'option_3'=> $option_3,
+            'option_3_img'=> $request->option_3_img,
+            'option_4'=> $option_4,
+            'option_4_img'=> $request->option_4_img,
+            'answer'=> $answer,
+            'tipe'=> $request->tipe,
         ]);
 
         //redirect
@@ -264,29 +281,37 @@ class ExamController extends Controller
      */
     public function updateQuestion(Request $request, Exam $exam, Question $question)
     {
+        // dd($request->all());
         //validate request
         $request->validate([
-            'question'          => 'required',
-            'option_1'          => 'required',
-            'option_2'          => 'required',
-            'option_3'          => 'required',
-            'option_4'          => 'required',
-            'answer'            => 'required',
+            'question'=> 'required',
+            'option_1'=> 'required',
+            'option_2'=> 'required',
+            'option_3'=> 'required',
+            'option_4'=> 'required',
+            'answer'=> 'required',
         ]);
+
+        if ($request->tipe == 'PG Komplek') {
+            $answer = implode(",",$request->answer);
+        }else{
+            $answer = $request->answer;
+        }
 
         //update question
         $question->update([
-            'question'          => $request->question,
-            'question_img'      => $request->question_img,
-            'option_1'          => $request->option_1,
-            'option_1_img'      => $request->option_1_img,
-            'option_2'          => $request->option_2,
-            'option_2_img'      => $request->option_2_img,
-            'option_3'          => $request->option_3,
-            'option_3_img'      => $request->option_3_img,
-            'option_4'          => $request->option_4,
-            'option_4_img'      => $request->option_4_img,
-            'answer'            => $request->answer,
+            'question'=> $request->question,
+            'question_img'=> $request->question_img,
+            'option_1'=> $request->option_1,
+            'option_1_img'=> $request->option_1_img,
+            'option_2'=> $request->option_2,
+            'option_2_img'=> $request->option_2_img,
+            'option_3'=> $request->option_3,
+            'option_3_img'=> $request->option_3_img,
+            'option_4'=> $request->option_4,
+            'option_4_img'=> $request->option_4_img,
+            'answer'=> $answer,
+            'tipe'=> $request->tipe,
         ]);
 
         //redirect
@@ -331,14 +356,12 @@ class ExamController extends Controller
         $file = $request->file('file');
         $fileName = $file->getClientOriginalName();
         if ($request->tipe == 'question') {
-            $file->move(public_path('exam_img/'.$request->exam_id.'/question'), $fileName);
+            $file->move(public_path('exam_img/' . $request->exam_id . '/question'), $fileName);
         } else {
-            $file->move(public_path('exam_img/'.$request->exam_id.'/option'), $fileName);
+            $file->move(public_path('exam_img/' . $request->exam_id . '/option'), $fileName);
         }
 
 
         // return response()->json(['imageName' => $fileName]);
     }
-
-
 }

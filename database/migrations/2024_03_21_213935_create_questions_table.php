@@ -26,7 +26,8 @@ return new class extends Migration
             $table->string('option_3_img')->nullable();
             $table->text('option_4')->nullable();
             $table->string('option_4_img')->nullable();
-            $table->integer('answer');
+            $table->string('answer');
+            $table->enum('tipe', ['PG', 'PG Komplek']);
             $table->timestamps();
         });
     }

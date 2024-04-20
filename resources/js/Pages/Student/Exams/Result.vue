@@ -42,7 +42,7 @@
                             </thead>
                             <tbody v-if="exam_group.exam.show_answer == 'Y'">
                                     <tr>
-                                        <td class="fw-bold">Jumlah Benar</td>
+                                        <td class="fw-bold">Jumlah Score</td>
                                         <td>{{  grade.total_correct  }}</td>
                                     </tr>
                                     <tr>

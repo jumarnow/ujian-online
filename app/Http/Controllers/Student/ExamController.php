@@ -212,32 +212,78 @@ class ExamController extends Controller
         $grade->duration = $request->duration;
         $grade->update();
 
-        //get question
-        $question = Question::find($request->question_id);
+        if ($request->tipe_soal == 'PG Komplek') {
+            // dd($request->all());
+            $trueValues = array_filter($request->checkedValues, function($value) {
+                return $value === true;
+            });
 
-        //cek apakah jawaban sudah benar
-        if($question->answer == $request->answer) {
+            $trueKeys = array_keys($trueValues, true);
+            // dd($trueKeys);
 
-            //jawaban benar
-            $result = 'Y';
-        } else {
+            $question = Question::find($request->question_id);
+            //cek apakah jawaban sudah benar
+            $keyQuestion = explode('.', $question->answer);
 
-            //jawaban salah
+            $keyQuestionInt = array_map('intval', $keyQuestion);
+            // dd($keyQuestionInt);
+
+            //get answer
+            $answer   = Answer::where('exam_id', $request->exam_id)
+                        ->where('exam_session_id', $request->exam_session_id)
+                        ->where('student_id', auth()->guard('student')->user()->id)
+                        ->where('question_id', $request->question_id)
+                        ->first();
+
+            $score = 0;
             $result = 'N';
-        }
+            if ($trueKeys === $keyQuestionInt) {
+                $score = 2;
+                $result = 'Y';
+            } elseif (array_intersect($trueKeys, $keyQuestionInt)) {
+                $score = 1;
+            }
 
-        //get answer
-        $answer   = Answer::where('exam_id', $request->exam_id)
-                    ->where('exam_session_id', $request->exam_session_id)
-                    ->where('student_id', auth()->guard('student')->user()->id)
-                    ->where('question_id', $request->question_id)
-                    ->first();
+            //update jawaban
+            if($answer) {
+                $answer->answer     = $request->answer;
+                $answer->is_correct = $result;
+                $answer->score = $score;
+                $answer->update();
+            }
 
-        //update jawaban
-        if($answer) {
-            $answer->answer     = $request->answer;
-            $answer->is_correct = $result;
-            $answer->update();
+        } else {
+            //get question
+            $question = Question::find($request->question_id);
+
+            //cek apakah jawaban sudah benar
+
+            $score = 0;
+            if($question->answer == $request->answer) {
+
+                //jawaban benar
+                $result = 'Y';
+                $score = 1;
+            } else {
+
+                //jawaban salah
+                $result = 'N';
+            }
+
+            //get answer
+            $answer   = Answer::where('exam_id', $request->exam_id)
+                        ->where('exam_session_id', $request->exam_session_id)
+                        ->where('student_id', auth()->guard('student')->user()->id)
+                        ->where('question_id', $request->question_id)
+                        ->first();
+
+            //update jawaban
+            if($answer) {
+                $answer->answer     = $request->answer;
+                $answer->is_correct = $result;
+                $answer->score = $score;
+                $answer->update();
+            }
         }
 
         return redirect()->back();
@@ -249,14 +295,18 @@ class ExamController extends Controller
         $count_correct_answer = Answer::where('exam_id', $request->exam_id)
                             ->where('exam_session_id', $request->exam_session_id)
                             ->where('student_id', auth()->guard('student')->user()->id)
-                            ->where('is_correct', 'Y')
-                            ->count();
+                            // ->where('is_correct', 'Y')
+                            ->sum('score');
 
         //count jumlah soal
-        $count_question = Question::where('exam_id', $request->exam_id)->count();
-
+        $pg_count_question = Question::where('exam_id', $request->exam_id)->where('tipe', 'PG')->count();
+        $pgk_count_question = Question::where('exam_id', $request->exam_id)->where('tipe', 'PG Komplek')->count() * 2;
+        $count_question = $pg_count_question + $pgk_count_question;
+        // dd($count_question);
         //hitung nilai
         $grade_exam = round($count_correct_answer/$count_question*100, 2);
+
+        // dd($grade_exam);
 
         //update nilai di table grades
         $grade = Grade::where('exam_id', $request->exam_id)

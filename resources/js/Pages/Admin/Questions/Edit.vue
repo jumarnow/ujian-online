@@ -18,6 +18,13 @@
                                         <tr>
                                             <td style="width:20%" class="fw-bold">Soal</td>
                                             <td>
+                                                <label for="">Tipe Soal : </label>&nbsp;
+                                                <span>
+                                                    <input type="radio" name="tipe" value="PG" :checked="form.tipe == 'PG'" v-model="form.tipe" @change="handleRadioChange('PG')">
+                                                    <span class="badge bg-info"> PG</span>&nbsp;
+                                                    <input type="radio" name="tipe" value="PG Komplek" :checked="form.tipe == 'PG Komplek'" v-model="form.tipe" @change="handleRadioChange('PG Komplek')">
+                                                    <span class="badge bg-secondary"> PG Komplek</span>
+                                                </span>
                                                 <Editor
                                                     api-key="nheg94q0w5i3bjbj5gottq1mrmrd3fnhdh7cm7mmcx3nkbhq"
                                                     v-model="form.question"
@@ -95,9 +102,9 @@
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td style="width:20%" class="fw-bold">Jawaban Benar</td>
+                                            <td style="width:20%" class="fw-bold">Jawaban Benar <br> <span :hidden="form.isMultiple == false"> (Pilih dua jawaban benar)</span></td>
                                             <td>
-                                                <select class="form-control" v-model="form.answer">
+                                                <select class="form-select" :multiple="form.isMultiple" v-model="form.answer">
                                                     <option value="1">A</option>
                                                     <option value="2">B</option>
                                                     <option value="3">C</option>
@@ -176,6 +183,8 @@
                 option_4: props.question.option_4,
                 option_4_img: '',
                 answer: props.question.answer,
+                tipe: props.question.tipe,
+                isMultiple: false // Inisialisasi atribut multiple
             });
             const handleQuestionUpload = (event) => {
                 // console.log(event);
@@ -273,6 +282,17 @@
                 })
             }
 
+
+            const handleRadioChange = (inputTipe) => {
+                if (inputTipe === 'PG Komplek') {
+                    form.isMultiple = true;
+                } else {
+                    form.isMultiple = false;
+                }
+            }
+
+            handleRadioChange(form.tipe)
+
             //method "submit"
             const submit = () => {
 
@@ -289,6 +309,7 @@
                     option_4: form.option_4,
                     option_4_img: form.option_4_img,
                     answer: form.answer,
+                    tipe: form.tipe,
                 }, {
                     onSuccess: () => {
                         //show success alert
@@ -308,6 +329,7 @@
             return {
                 form,
                 handleQuestionUpload,
+                handleRadioChange,
                 handleOptionA,
                 handleOptionB,
                 handleOptionC,

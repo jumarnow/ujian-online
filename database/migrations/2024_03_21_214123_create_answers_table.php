@@ -21,8 +21,9 @@ return new class extends Migration
             $table->foreignId('student_id')->references('id')->on('students')->cascadeOnDelete();
             $table->integer('question_order');
             $table->string('answer_order');
-            $table->integer('answer');
+            $table->string('answer');
             $table->enum('is_correct', ['Y', 'N'])->default('N');
+            $table->integer('score')->nullable();
             $table->timestamps();
         });
     }

@@ -8,7 +8,13 @@
                 <div class="card-header">
                     <div class="d-flex justify-content-between">
                         <div>
-                            <h5 class="mb-0">Soal No. <strong class="fw-bold">{{ page }}</strong></h5>
+                            <h5 class="mb-0">Soal No. <strong class="fw-bold">{{ page }}</strong> &nbsp;
+                                <span :class="{
+                                    'badge': true,
+                                    'bg-success': question_active.question.tipe === 'PG',
+                                    'bg-info': question_active.question.tipe === 'PG Komplek'
+                                }" v-html="question_active.question.tipe"></span>
+                            </h5>
                         </div>
                         <div>
                             <span class="badge bg-info p-2"> <i class="fa fa-clock"></i>
@@ -25,23 +31,30 @@
                     <div v-if="question_active !== null">
 
                         <div>
-                            <img :src="`/exam_img/${question_active.question.exam.id}/question/${question_active.question.question_img}`" width="200" alt="">
+                            <img v-if="question_active.question.question_img" :src="`/exam_img/${question_active.question.exam.id}/question/${question_active.question.question_img}`" width="200" alt="">
                             <p v-html="question_active.question.question"></p>
                         </div>
 
                         <table>
-                            <tbody>
+                            <tbody v-if="question_active.question.tipe == 'PG Komplek'">
                                 <tr v-for="(answer, index) in answer_order" :key="index">
                                     <td width="50" style="padding: 10px;">
-
-                                        <button v-if="answer == question_active.answer" class="btn btn-info btn-sm w-100 shdaow">{{ options[index] }}</button>
-
-                                        <button v-else @click.prevent="submitAnswer(question_active.question.exam.id, question_active.question.id, answer)" class="btn btn-outline-info btn-sm w-100 shdaow">{{ options[index] }}</button>
-
+                                        <input type="checkbox" v-model="checkedValues[answer]" :value="answer" @change="submitAnswer(question_active.question.exam.id, question_active.question.id, answer, 'PG Komplek')" />
                                     </td>
                                     <td style="padding: 10px;">
-
-                                        <img :src="`/exam_img/${question_active.question.exam.id}/option/${question_active.question['option_'+answer+'_img']}`" width="200" alt="">
+                                        <img v-if="question_active.question['option_'+answer+'_img']" :src="`/exam_img/${question_active.question.exam.id}/option/${question_active.question['option_'+answer+'_img']}`" width="200" alt="">
+                                        <p v-html="question_active.question['option_'+answer]"></p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody v-else>
+                                <tr v-for="(answer, index) in answer_order" :key="index">
+                                    <td width="50" style="padding: 10px;">
+                                        <button v-if="answer == question_active.answer" class="btn btn-info btn-sm w-100 shadow">{{ options[index] }}</button>
+                                        <button v-else @click.prevent="submitAnswer(question_active.question.exam.id, question_active.question.id, answer, 'PG')" class="btn btn-outline-info btn-sm w-100 shdaow">{{ options[index] }}</button>
+                                    </td>
+                                    <td style="padding: 10px;">
+                                        <img v-if="question_active.question['option_'+answer+'_img']" :src="`/exam_img/${question_active.question.exam.id}/option/${question_active.question['option_'+answer+'_img']}`" width="200" alt="">
                                         <p v-html="question_active.question['option_'+answer]"></p>
                                     </td>
                                 </tr>
@@ -181,13 +194,17 @@ export default {
         question_active: Object,
         answer_order: Array,
         duration: Object,
+        checkedValues: {
+            type: Array,
+            default: () => []
+        }
     },
 
     //composition API
     setup(props) {
 
         //define options for answer
-        let options = ["A", "B", "C", "D", "E"];
+        let options = ["A", "B", "C", "D"];
 
         //define state counter
         const counter = ref(0);
@@ -254,12 +271,15 @@ export default {
             Inertia.get(`/student/exam/${props.id}/${index + 1}`);
         })
 
-        const submitAnswer = ((exam_id, question_id, answer) => {
+        const submitAnswer = ((exam_id, question_id, answer, tipe_soal) => {
+
             Inertia.post('/student/exam-answer', {
                 exam_id: exam_id,
                 exam_session_id: props.exam_group.exam_session.id,
                 question_id: question_id,
                 answer: answer,
+                tipe_soal: tipe_soal,
+                checkedValues: props.checkedValues,
                 duration: duration.value
             });
         })
@@ -288,8 +308,6 @@ Swal.fire({
 });
 
 })
-
-
         //return
         return {
             options,
@@ -307,7 +325,3 @@ Swal.fire({
     }
 }
 </script>
-
-<style>
-
-</style>
