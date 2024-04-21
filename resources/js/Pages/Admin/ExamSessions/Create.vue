@@ -43,7 +43,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-4">
                                         <label>Waktu Mulai</label>
-                                        <Datepicker v-model="form.start_time" />
+                                        <input type="datetime-local" class="form-control" v-model="form.start_time" />
                                         <div v-if="errors.start_time" class="alert alert-danger mt-2">
                                             {{ errors.start_time }}
                                         </div>
@@ -52,7 +52,7 @@
                                 <div class="col-md-6">
                                     <div class="mb-4">
                                         <label>Waktu Selesai</label>
-                                        <Datepicker v-model="form.end_time" />
+                                        <input type="datetime-local" class="form-control" v-model="form.end_time" />
                                         <div v-if="errors.end_time" class="alert alert-danger mt-2">
                                             {{ errors.end_time }}
                                         </div>

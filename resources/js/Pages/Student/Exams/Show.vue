@@ -272,7 +272,6 @@ export default {
         })
 
         const submitAnswer = ((exam_id, question_id, answer, tipe_soal) => {
-
             Inertia.post('/student/exam-answer', {
                 exam_id: exam_id,
                 exam_session_id: props.exam_group.exam_session.id,
