@@ -213,13 +213,6 @@ class ExamController extends Controller
         $grade->update();
 
         if ($request->tipe_soal == 'PG Komplek') {
-            // dd($request->all());
-            $trueValues = array_filter($request->checkedValues, function($value) {
-                return $value === true;
-            });
-
-            $trueKeys = array_keys($trueValues, true);
-            // dd($trueKeys);
 
             $question = Question::find($request->question_id);
             //cek apakah jawaban sudah benar
@@ -237,10 +230,10 @@ class ExamController extends Controller
 
             $score = 0;
             $result = 'N';
-            if ($trueKeys === $keyQuestionInt) {
+            if ($request->checkedValues === $keyQuestionInt) {
                 $score = 2;
                 $result = 'Y';
-            } elseif (array_intersect($trueKeys, $keyQuestionInt)) {
+            } elseif (array_intersect($request->checkedValues, $keyQuestionInt)) {
                 $score = 1;
             }
 

@@ -197,7 +197,7 @@ export default {
         checkedValues: {
             type: Array,
             default: () => []
-        }
+        },
     },
 
     //composition API
@@ -205,6 +205,7 @@ export default {
 
         //define options for answer
         let options = ["A", "B", "C", "D"];
+        let trueCheckbox= [];
 
         //define state counter
         const counter = ref(0);
@@ -272,13 +273,25 @@ export default {
         })
 
         const submitAnswer = ((exam_id, question_id, answer, tipe_soal) => {
+
+            trueCheckbox = props.checkedValues.reduce((acc, value, index) => {
+            if (value === true) {
+                acc.push(index);
+            }
+            return acc;
+            }, []);
+
+            if (trueCheckbox.length > 2) {
+                alert('Soal hanya berisi 2 jawaban benar');
+            }
+
             Inertia.post('/student/exam-answer', {
                 exam_id: exam_id,
                 exam_session_id: props.exam_group.exam_session.id,
                 question_id: question_id,
                 answer: answer,
                 tipe_soal: tipe_soal,
-                checkedValues: props.checkedValues,
+                checkedValues: trueCheckbox,
                 duration: duration.value
             });
         })
